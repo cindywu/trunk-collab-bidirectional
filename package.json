@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "postinstall": "cp node_modules/replicache/out/*.wasm public/"
   },
   "dependencies": {
     "next": "10.2.0",
