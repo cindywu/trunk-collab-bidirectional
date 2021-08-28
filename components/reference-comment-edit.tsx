@@ -16,6 +16,13 @@ export default function ReferenceCommentEdit(props : Props) {
     handleCommentDelete
   } = props
 
+  let obj: { user: string; content: string; id: string }
+
+  typeof(comment) === 'object' ?
+    obj = comment
+    :
+    obj = JSON.parse(comment)
+
   function handleChange(changes: object) {
     handleCommentChange(comment.id, { ...comment, ...changes})
   }
@@ -27,18 +34,18 @@ export default function ReferenceCommentEdit(props : Props) {
         type="text"
         autoComplete="none"
         onChange={(e) => handleChange({ name: e.target.value })}
-        value={comment.user}
+        value={obj.user}
       />
       <input
         className={styles.input}
         type="text"
         autoComplete="none"
         onChange={(e) => handleChange({ content: e.target.value })}
-        value={comment.content}
+        value={obj.content}
       />
       <button
         className="btn btn--danger"
-        onClick={() => handleCommentDelete(comment.id)}
+        onClick={() => handleCommentDelete(obj.id)}
       >
         &times;
       </button>

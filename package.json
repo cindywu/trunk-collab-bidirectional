@@ -9,6 +9,7 @@
     "postinstall": "cp node_modules/replicache/out/*.wasm public/"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^1.22.3",
     "next": "10.2.0",
     "pg-promise": "^10.10.2",
     "pusher": "^5.0.0",

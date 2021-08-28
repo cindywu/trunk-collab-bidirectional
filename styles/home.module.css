@@ -33,7 +33,7 @@
   flex-grow: 1;
 }
 
-.title a {
+.title {
   color: #0070f3;
   text-decoration: none;
 }
@@ -58,4 +58,21 @@
 .description {
   line-height: 1.5;
   font-size: 1.5rem;
+}
+
+.code {
+  color: hsl(0, 0%, 72%);
+  background: white;
+  border: 1px solid hsl(0, 0%, 92%);
+  padding: .4em;
+  border-radius: .4em;
+  margin-top: 1em;
+}
+
+.userEmail {
+  color: #0070f3;
+}
+
+.secret {
+  color: transparent;
 }

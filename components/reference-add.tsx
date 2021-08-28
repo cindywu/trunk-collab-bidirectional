@@ -15,11 +15,14 @@ export default function ReferenceAdd({ rep }: any) {
   const titleRef = useRef<HTMLTextAreaElement>(null)
 
   function handleSaveReference(){
+    const date = new Date()
+    const myDate = (date.toLocaleString('default', { month: 'short'})) + " " + date.getUTCDate()
+
     const newReference = {
       id: uuidv4(),
       name: nameRef.current ? nameRef.current.value : '',
       parent: parentRef.current ? parentRef.current.value : '',
-      date: 'Apr 10',
+      date: myDate,
       description: titleRef.current ? titleRef.current.value : '',
       labels: [
         {

@@ -1,0 +1,16 @@
+.inputInstructions {
+}
+
+.input {
+  border: 1px solid #eaeaea;
+  margin: 0;
+  width: 100%;
+  padding: 1em;
+  font-size: 1em;
+}
+
+.magicLinkBtn {
+  width: 100%;
+  margin: 2em;
+  border: 1px solid hsl(0, 0%, 72%);
+}

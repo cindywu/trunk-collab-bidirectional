@@ -1,21 +1,41 @@
-import React , { useRef } from 'react'
+import React , { useRef, useEffect, useState } from 'react'
 import styles from './comment-form.module.css'
 import { useReferences } from './reference-provider'
 import { v4 as uuidv4 } from 'uuid'
+import { AuthSession } from '@supabase/supabase-js'
 
 export default function CommentForm({selectedReference} : any) {
   const contentRef = useRef<HTMLTextAreaElement>(null)
+  const [session, setSession] = useState(null)
+
+  const LOCAL_STORAGE_KEY = 'supabase.auth.token'
 
   const { handleReferenceChange } = useReferences()
+
+  useEffect(() => {
+    const session = localStorage.getItem(LOCAL_STORAGE_KEY)
+    if (session != null) (
+      setSession(JSON.parse(session).currentSession)
+    )
+  }, [])
 
   function handleChange(changes: object) {
     selectedReference && handleReferenceChange({ ...selectedReference, ...changes })
   }
 
   function handleCommentAdd() {
+    let email
+
+    if (session !== null) {
+      const { user } = session
+      email = user.email
+    } else {
+      email = 'cindy'
+    }
+
     const newComment = {
       id: uuidv4(),
-      user: 'cindy',
+      user: email,
       content: contentRef.current && contentRef.current.value,
     }
     selectedReference && handleChange({ comments: [...selectedReference.comments, newComment]})

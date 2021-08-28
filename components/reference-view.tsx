@@ -16,8 +16,8 @@ export default function ReferenceView({ references, selectedReference }: any) {
               <div className={styles.buttonContainer}>
                 <button className={`${styles.subReferenceButton} btn btn-secondary`}>+ Add sub-references</button>
               </div>
-              {/* <CommentList selectedReference={v}/>
-              <CommentForm selectedReference={v}/> */}
+              <CommentList selectedReference={v}/>
+              <CommentForm selectedReference={v}/>
             </div>
         )
       })}

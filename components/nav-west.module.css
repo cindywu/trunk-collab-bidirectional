@@ -10,3 +10,11 @@
 .container:hover {
   color: black;
 }
+
+.signOutBtn {
+  color: white;
+}
+
+.signOutBtn:hover {
+  color: hsl(0, 0%, 62%);
+}

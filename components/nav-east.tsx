@@ -17,7 +17,10 @@ export default function NavEast({rep} : any) {
   )
 
   useEffect(() => {
+    selectedReferenceId ?
     findSelectedReference()
+    :
+    setSelectedReference(null)
   }, [selectedReferenceId])
 
   function findSelectedReference(){
@@ -32,7 +35,7 @@ export default function NavEast({rep} : any) {
 
   return (
     <>
-      { selectedReference &&
+      { selectedReferenceId &&
         <ReferenceEdit
           selectedReference={selectedReference}
           setSelectedReference={setSelectedReference}
