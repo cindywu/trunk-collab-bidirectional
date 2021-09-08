@@ -1750,10 +1750,10 @@ replicache-react@^1.0.0:
   resolved "https://registry.yarnpkg.com/replicache-react/-/replicache-react-1.0.0.tgz#33f8483efd1671b758c60ab7e83243ed45641101"
   integrity sha512-ytQSf2bjBjxPlr5RYdzikrctZJxAMW0ojyRoU8PQw/UNaio1qS4of1x/KLCT9zXfAguLJN7c5B/ERPCLyKwpnw==
 
-replicache@^6.3.2:
-  version "6.3.2"
-  resolved "https://registry.yarnpkg.com/replicache/-/replicache-6.3.2.tgz#e66a056117c90f81d81eae070c0eb5b87b8f169a"
-  integrity sha512-qWtGwRyXYdJdvbScDx4fLYiR9Tykmyxvw2UkT5QSqXrlI8nMJTsiGGTTXNIgCtjIFj4JT9JskxPu7uRKdHS37w==
+replicache@6.4.2:
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/replicache/-/replicache-6.4.2.tgz#a1ccd945c5210b389e063cd683eb574aded869b2"
+  integrity sha512-fig62TTU3nf/Z29pxIwL62hF3jBsmuhOV5ISwXMXgMva4Ye9g67xrFys+qzrbSEHo/bkqd5uyGF7v6T6BvXHAQ==
 
 ripemd160@^2.0.0, ripemd160@^2.0.1:
   version "2.0.2"

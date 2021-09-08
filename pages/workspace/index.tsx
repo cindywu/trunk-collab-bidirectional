@@ -51,6 +51,8 @@ export default function Workspace() {
       listen(rep)
       setRep(rep)
       handleSetRep(rep)
+
+      console.log("rep", rep)
     })()
   }, [])
 
