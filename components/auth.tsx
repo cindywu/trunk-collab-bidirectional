@@ -9,13 +9,12 @@ export default function Auth() {
   const handleLogin = async (email: string) => {
     try {
       setLoading(true)
-      const { error, user } = await supabase.auth.signIn({
+      const { error } = await supabase.auth.signIn({
         email
       }, {
         redirectTo: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : null
       })
       if (error) throw error
-      console.log('user', user)
       alert('Check your email for the login link!')
     } catch (error) {
       console.log('Error thrown:', error.message)
@@ -41,7 +40,7 @@ export default function Auth() {
           handleLogin(email)
         }}
       >
-          SEND MAGIC LINK
+        {loading ? 'LOADING...' : 'SEND MAGIC LINK'}
       </button>
     </>
   )

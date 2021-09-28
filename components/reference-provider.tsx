@@ -1,6 +1,7 @@
-import React, { useState, createContext, useContext } from 'react'
+import React, { useState, createContext, useContext, useEffect } from 'react'
 import { IReference } from '../interfaces'
-// import { sampleReferenceData } from '../utils/sample-data'
+import { AuthSession } from '@supabase/supabase-js'
+import { Replicache } from 'replicache'
 
 type ReferencesContextType = {
   selectedReferenceId: string | undefined
@@ -14,6 +15,7 @@ type ReferencesContextType = {
   handleShowReferenceAdd: () => void
   handleReferenceExpandChange: () => void
   handleSetRep: (rep: any) => void
+  session: AuthSession
 }
 
 const defaultContextValue = {
@@ -27,7 +29,8 @@ const defaultContextValue = {
   handleReferenceChange: (reference: IReference) => {},
   handleShowReferenceAdd: () => {},
   handleReferenceExpandChange: () => {},
-  handleSetRep: (rep: any) => {}
+  handleSetRep: (rep: any) => {},
+  session: null
 }
 
 export const ReferencesContext = createContext<ReferencesContextType>(defaultContextValue)
@@ -36,11 +39,21 @@ type ReferenceProviderProps = {
   children: React.ReactNode
 }
 
+const LOCAL_STORAGE_KEY = 'supabase.auth.token'
+
 export const ReferenceProvider = ({ children } : ReferenceProviderProps) => {
   const [showReferenceAdd, setShowReferenceAdd] = useState<boolean>(false)
   const [selectedReferenceId, setSelectedReferenceId] = useState<string | undefined>()
   const [expandSelectedReference, setExpandSelectedReference] = useState<boolean>(false)
   const [rep, setRep] = useState<any>()
+  const [session, setSession] = useState<AuthSession>(null)
+
+  useEffect(() => {
+    const session = localStorage.getItem(LOCAL_STORAGE_KEY)
+    if (session != null) (
+      setSession(JSON.parse(session).currentSession)
+    )
+  }, [])
 
   const referencesContextValue = {
     selectedReferenceId,
@@ -54,6 +67,7 @@ export const ReferenceProvider = ({ children } : ReferenceProviderProps) => {
     handleShowReferenceAdd,
     handleReferenceExpandChange,
     handleSetRep,
+    session
   }
 
   function handleReferenceSelect(id: string){
@@ -101,7 +115,7 @@ export const ReferenceProvider = ({ children } : ReferenceProviderProps) => {
     setExpandSelectedReference(!expandSelectedReference)
   }
 
-  function handleSetRep(rep: any) {
+  function handleSetRep(rep: Replicache) {
     setRep(rep)
   }
 

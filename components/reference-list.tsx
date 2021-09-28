@@ -3,10 +3,15 @@ import Reference from './reference'
 import styles from './reference-list.module.css'
 import type { IReference } from '../interfaces'
 
-export default function ReferenceList({ references, selectedReference }: any ) {
+type Props = {
+  references: any,
+  selectedReference: IReference
+}
+
+export default function ReferenceList({ references, selectedReference } : Props) {
   return (
     <div className={styles.container}>
-      {references.map(([k, v] : any) => {
+      {references.map(([k, v]: [string, IReference]) => {
         return (
           <Reference
             key={k}

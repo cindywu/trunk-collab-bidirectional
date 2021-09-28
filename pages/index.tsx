@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import styles from '../styles/home.module.css'
 import { AuthSession } from '@supabase/supabase-js'
-import Auth from '../components/auth'
+
+import styles from '../styles/home.module.css'
 import { supabase } from '../lib/supabaseClient'
+import Auth from '../components/auth'
+import { useReferences } from '../components/reference-provider'
 
 export default function Home() {
   const [session, setSession] = useState<AuthSession | null>(null)
+  const { user } = session || {}
 
   useEffect(() => {
-    setSession(supabase.auth.session())
-
     supabase.auth.onAuthStateChange((_event: string, session: AuthSession | null) => {
       setSession(session)
     })
@@ -35,10 +36,10 @@ export default function Home() {
         </p>
         {!session ? (
           <Auth/>
-        ): (
+        ) : (
           <>
-            {session.user &&
-              <p className={styles.userEmail}>{session.user.email}</p>
+            {user &&
+              <p className={styles.userEmail}>{user.email}</p>
             }
             <Link href="/workspace">
               <button className='btn btn--secondary'>ENTER TO WORKSPACE</button>

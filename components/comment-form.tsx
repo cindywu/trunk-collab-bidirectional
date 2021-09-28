@@ -1,23 +1,20 @@
-import React , { useRef, useEffect, useState } from 'react'
+import React , { useRef } from 'react'
 import styles from './comment-form.module.css'
 import { useReferences } from './reference-provider'
 import { v4 as uuidv4 } from 'uuid'
-import { AuthSession } from '@supabase/supabase-js'
+import type { IReference } from '../interfaces'
 
-export default function CommentForm({selectedReference} : any) {
+type Props = {
+  selectedReference: IReference
+}
+
+export default function CommentForm({ selectedReference } : Props) {
   const contentRef = useRef<HTMLTextAreaElement>(null)
-  const [session, setSession] = useState(null)
 
-  const LOCAL_STORAGE_KEY = 'supabase.auth.token'
-
-  const { handleReferenceChange } = useReferences()
-
-  useEffect(() => {
-    const session = localStorage.getItem(LOCAL_STORAGE_KEY)
-    if (session != null) (
-      setSession(JSON.parse(session).currentSession)
-    )
-  }, [])
+  const {
+    handleReferenceChange,
+    session
+  } = useReferences()
 
   function handleChange(changes: object) {
     selectedReference && handleReferenceChange({ ...selectedReference, ...changes })
@@ -30,7 +27,7 @@ export default function CommentForm({selectedReference} : any) {
       const { user } = session
       email = user.email
     } else {
-      email = 'cindy'
+      email = 'guest'
     }
 
     const newComment = {

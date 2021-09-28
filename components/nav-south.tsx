@@ -3,10 +3,16 @@ import ReferenceList from './reference-list'
 import ReferenceView from './reference-view'
 import { useReferences } from './reference-provider'
 import { useSubscribe } from 'replicache-react'
+import { Replicache } from 'replicache'
+import type { IReference } from '../interfaces'
 
-export default function NavSouth({ rep } : any) {
+type Props = {
+  rep: Replicache
+}
+
+export default function NavSouth({ rep } : Props) {
   const { selectedReferenceId, expandSelectedReference } = useReferences()
-  const [selectedReference, setSelectedReference] = useState<any>()
+  const [selectedReference, setSelectedReference] = useState<IReference>()
 
   const references = useSubscribe(
     rep,
@@ -25,7 +31,7 @@ export default function NavSouth({ rep } : any) {
   }, [selectedReferenceId, references])
 
   function findSelectedReference(){
-    references.map(([k, v]) => {
+    references.map(([k, v]: [string, IReference]) => {
       if (k.substring(4) === selectedReferenceId) {
         const payload = v
         Object.assign(payload, {id: k.substring(4)})
@@ -38,7 +44,6 @@ export default function NavSouth({ rep } : any) {
     <>
       { selectedReference && expandSelectedReference ?
         <ReferenceView
-          references={references}
           selectedReference={selectedReference}
         />
       :

@@ -3,7 +3,7 @@ import styles from './reference-edit.module.css'
 import type { ILabel } from '../interfaces'
 
 type Props = {
-  label: string
+  label: ILabel
   handleLabelChange: (id: string, label: ILabel) => void
   handleLabelDelete: (id: string) => void
 }
@@ -15,10 +15,8 @@ export default function ReferenceLabelEdit(props : Props) {
     handleLabelDelete
   } = props
 
-  const obj = JSON.parse(label)
-
   function handleChange(changes: object) {
-    handleLabelChange(obj.id, { ...obj, ...changes})
+    handleLabelChange(label.id, { ...label, ...changes})
   }
 
   return (
@@ -28,18 +26,18 @@ export default function ReferenceLabelEdit(props : Props) {
         type="text"
         autoComplete="none"
         onChange={(e) => handleChange({ name: e.target.value })}
-        value={obj.name}
+        value={label.name}
       />
       <input
         className={styles.input}
         type="text"
         autoComplete="none"
         onChange={(e) => handleChange({ color: e.target.value })}
-        value={obj.color}
+        value={label.color}
       />
       <button
         className="btn btn--danger btn--wide"
-        onClick={() => handleLabelDelete(obj.id)}
+        onClick={() => handleLabelDelete(label.id)}
       >
         &times;
       </button>

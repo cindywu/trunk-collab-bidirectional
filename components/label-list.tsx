@@ -1,8 +1,9 @@
 import React from 'react'
 import Label from './label'
+import type { ILabel } from '../interfaces'
 
 type Props = {
-  labels: any[]
+  labels: ILabel[]
 }
 
 export default function LabelList({ labels } : Props) {

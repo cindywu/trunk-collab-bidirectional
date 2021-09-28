@@ -1,12 +1,12 @@
 import React from 'react'
 import styles from './reference-edit.module.css'
-import { IComment } from '../interfaces'
+import { IComment, IReference } from '../interfaces'
 
 type Props = {
   comment: IComment
   handleCommentChange: (id: string, comment: IComment) => void
   handleCommentDelete: (id: string) => void
-  selectedReference: any
+  selectedReference: IReference
 }
 
 export default function ReferenceCommentEdit(props : Props) {

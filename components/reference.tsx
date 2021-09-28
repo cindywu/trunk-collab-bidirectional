@@ -7,7 +7,7 @@ import { useReferences } from './reference-provider'
 interface ReferenceProps {
   value:  IReference
   id: string
-  selectedReference: any
+  selectedReference: IReference
 }
 
 export default function Reference(props : ReferenceProps ){

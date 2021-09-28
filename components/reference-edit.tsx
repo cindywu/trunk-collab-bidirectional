@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './reference-edit.module.css'
 import ReferenceLabelEdit from './reference-label-edit'
 import ReferenceCommentEdit from './reference-comment-edit'
 import { useReferences } from './reference-provider'
-import { ILabel, IComment } from '../interfaces'
+import { ILabel, IComment, IReference } from '../interfaces'
 import { v4 as uuidv4 } from 'uuid'
 
-export default function ReferenceEdit({ selectedReference, setSelectedReference }: any) {
+type Props = {
+  selectedReference: IReference,
+  setSelectedReference: (reference: IReference) => void,
+}
+
+
+export default function ReferenceEdit({ selectedReference, setSelectedReference }: Props) {
   const {
     handleReferenceArchive,
     handleReferenceDeselect,
@@ -45,7 +51,7 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
 
   const handleLabelDelete = (id: string) => {
     handleChange({
-      labels: selectedReference.labels.filter((label: any) => label.id !== id)
+      labels: selectedReference.labels.filter((label: ILabel) => label.id !== id)
     })
   }
 
@@ -77,7 +83,7 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
       obj = JSON.parse(selectedReference.comments)
 
     handleChange({
-      comments: obj.filter((comment: any) => JSON.parse(comment).id !== id)
+      comments: obj.filter((comment: string) => JSON.parse(comment).id !== id)
     })
   }
 
@@ -172,7 +178,7 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
             <ReferenceLabelEdit
               handleLabelChange={handleLabelChange}
               handleLabelDelete={handleLabelDelete}
-              label={label}
+              label={JSON.parse(label)}
               key={JSON.parse(label).id}
             />
           ))}

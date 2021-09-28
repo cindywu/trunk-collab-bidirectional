@@ -1,15 +1,20 @@
 import React from 'react'
 import Comment from './comment'
 import styles from './comment-list.module.css'
+import type { IReference, IComment } from '../interfaces'
 
-export default function CommentList({selectedReference}: any) {
+type Props = {
+  selectedReference: IReference
+}
+
+export default function CommentList({ selectedReference } : Props) {
 
   const { comments } = Object(selectedReference)
 
   return (
     <div className={styles.container}>
       <div className={styles.heading}>Discussion</div>
-      {comments.map((comment: any) => {
+      {comments.map((comment: IComment) => {
         let obj
 
         typeof(comment) === 'object' ?

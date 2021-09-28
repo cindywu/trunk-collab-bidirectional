@@ -13,8 +13,34 @@ import { Replicache } from 'replicache'
 import Pusher from 'pusher-js'
 
 export default function Workspace() {
-  const [rep, setRep] = useState<any>(null)
+  const [rep, setRep] = useState<Replicache>(null)
   const { handleSetRep } = useReferences()
+
+  const mutators = {
+    async createReference(tx, {id, name, parent, date, description, labels, comments}) {
+      await tx.put(`ref/${id}`, {
+        name,
+        parent,
+        date,
+        description,
+        labels,
+        comments
+      })
+    },
+    async deleteReference(tx, {id}) {
+      await tx.del(`ref/${id}`)
+    },
+    async updateReference(tx, {id, name, parent, date, description, labels, comments}) {
+      await tx.put(`ref/${id}`, {
+        name,
+        parent,
+        date,
+        description,
+        labels,
+        comments
+      })
+    }
+  }
 
   useEffect(() => {
     (async() => {
@@ -22,41 +48,15 @@ export default function Workspace() {
         pushURL: '/api/rep-push',
         pullURL: 'api/rep-pull',
         wasmModule: '/replicache.dev.wasm',
-        mutators: {
-          async createReference(tx, {id, name, parent, date, description, labels, comments}) {
-            await tx.put(`ref/${id}`, {
-              name,
-              parent,
-              date,
-              description,
-              labels,
-              comments
-            })
-          },
-          async deleteReference(tx, {id}) {
-            await tx.del(`ref/${id}`)
-          },
-          async updateReference(tx, {id, name, parent, date, description, labels, comments}) {
-            await tx.put(`ref/${id}`, {
-              name,
-              parent,
-              date,
-              description,
-              labels,
-              comments
-            })
-          }
-        },
+        mutators: mutators,
       })
       listen(rep)
       setRep(rep)
       handleSetRep(rep)
-
-      console.log("rep", rep)
     })()
   }, [])
 
-  function listen(rep: any){
+  function listen(rep: Replicache){
     console.log('listening');
     // Listen for pokes, and pull whenever we get one.
     Pusher.logToConsole = true;
@@ -75,7 +75,7 @@ export default function Workspace() {
       <Head>
         <title>Workspace</title>
       </Head>
-      <ReferenceAdd />
+      <ReferenceAdd rep={rep}/>
       <div className={styles.container}>
         <NavWest />
         <div className={styles.center}>
