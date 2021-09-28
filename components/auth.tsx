@@ -9,7 +9,11 @@ export default function Auth() {
   const handleLogin = async (email: string) => {
     try {
       setLoading(true)
-      const { error, user } = await supabase.auth.signIn({ email })
+      const { error, user } = await supabase.auth.signIn({
+        email
+      }, {
+        redirectTo: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : null
+      })
       if (error) throw error
       console.log('user', user)
       alert('Check your email for the login link!')
