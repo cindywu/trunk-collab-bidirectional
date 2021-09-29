@@ -22,7 +22,7 @@ export default function Workspace() {
   const { handleSetRep } = useReferences()
 
   const mutators = {
-    async createReference(tx, {id, name, parent, date, description, labels, comments}) {
+    async createReference(tx: any, {id, name, parent, date, description, labels, comments}) {
       await tx.put(`ref/${id}`, {
         name,
         parent,
@@ -32,10 +32,10 @@ export default function Workspace() {
         comments
       })
     },
-    async deleteReference(tx, {id}) {
+    async deleteReference(tx: any, {id}) {
       await tx.del(`ref/${id}`)
     },
-    async updateReference(tx, {id, name, parent, date, description, labels, comments}) {
+    async updateReference(tx: any, {id, name, parent, date, description, labels, comments}) {
       await tx.put(`ref/${id}`, {
         name,
         parent,
@@ -80,7 +80,7 @@ export default function Workspace() {
       <Head>
         <title>Workspace</title>
       </Head>
-      <ReferenceAdd rep={rep}/>
+      <ReferenceAdd/>
       <div className={styles.container}>
         <NavWest />
         <div className={styles.center}>

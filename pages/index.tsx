@@ -6,7 +6,6 @@ import { AuthSession } from '@supabase/supabase-js'
 import styles from '../styles/home.module.css'
 import { supabase } from '../lib/supabaseClient'
 import Auth from '../components/auth'
-import { useReferences } from '../components/reference-provider'
 
 export default function Home() {
   const [session, setSession] = useState<AuthSession | null>(null)

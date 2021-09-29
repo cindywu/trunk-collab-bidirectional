@@ -2,13 +2,8 @@ import React, { useRef } from 'react'
 import styles from './reference-add.module.css'
 import { useReferences } from './reference-provider'
 import { v4 as uuidv4 } from 'uuid'
-import { Replicache } from 'replicache'
 
-type Props = {
-  rep: Replicache
-}
-
-export default function ReferenceAdd({ rep }: Props) {
+export default function ReferenceAdd() {
   const {
     showReferenceAdd,
     handleReferenceAdd,
