@@ -87,6 +87,10 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
     })
   }
 
+  function handleSourceFileAdd() {
+    console.log('I am in handleSourceFileAdd')
+  }
+
   return (
     selectedReference &&
     <div className={styles.container}>
@@ -161,11 +165,16 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
           className={styles.input} />
       </div>
       <div className={styles.labelContainer}>
-        <label
-          htmlFor="labels"
-          className={styles.label}>
-          Labels
-        </label>
+        <label htmlFor="labels" className={styles.label}/>
+
+        <div className={styles.buttonContainer}>
+          <button
+            className="btn btn--secondary"
+            onClick={handleLabelAdd}
+          >
+            + Add label
+          </button>
+        </div>
         <div className={styles.labelGrid}>
           <div>
             Name
@@ -183,21 +192,16 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
             />
           ))}
         </div>
-        <div className={styles.buttonContainer}>
-          <button
-            className="btn btn--primary"
-            onClick={handleLabelAdd}
-          >
-            Add Label
-          </button>
-        </div>
         <div className={styles.commentsContainer}>
-          <label
-            htmlFor="comments"
-            className={styles.label}
-          >
-            Comments
-          </label>
+          <label htmlFor="comments" className={styles.label}/>
+          <div className={styles.buttonContainer}>
+            <button
+              className="btn btn--secondary"
+              onClick={handleCommentAdd}
+            >
+              + Add comment
+            </button>
+          </div>
           <div className={styles.commentGrid}>
             <div>User</div>
             <div>Content</div>
@@ -211,27 +215,35 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
                 comment={comment}
               />
             ))}
-
-          </div>
-          <div className={styles.buttonContainer}>
-            <button
-              className="btn btn--primary"
-              onClick={handleCommentAdd}
-            >
-              Add Comment
-            </button>
           </div>
         </div>
+        <div className={styles.sourceFileContainer}>
+          <label htmlFor="sourceFile" className={styles.label}/>
+          <div className={styles.buttonContainer}>
+            <button
+              className="btn btn--secondary"
+              onClick={handleSourceFileAdd}
+            >
+           + Add source file
+           </button>
+          </div>
+          <div>
+            No source file
+          </div>
 
-        <div
-          className={styles.buttonContainer}
-        >
-          <button
-            className="btn btn--secondary"
-            onClick={() => handleReferenceArchive(selectedReference.id)}
+        </div>
+        <div className={styles.archiveContainer}>
+          <label htmlFor="archiveReference" className={styles.label}/>
+          <div
+            className={styles.lastButtonContainer}
           >
-            Archive
-          </button>
+            <button
+              className="btn btn--secondary"
+              onClick={() => handleReferenceArchive(selectedReference.id)}
+            >
+              Archive reference
+            </button>
+          </div>
         </div>
       </div>
     </div>

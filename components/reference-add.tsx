@@ -42,6 +42,10 @@ export default function ReferenceAdd() {
     handleReferenceAdd(newReference)
   }
 
+  function handleSourceFileAdd(){
+    console.log('I am in handleSourceFileAdd')
+  }
+
   return (
     <>
       {showReferenceAdd &&
@@ -87,8 +91,11 @@ export default function ReferenceAdd() {
         </div>
         <div className={styles.buttonContainer}>
           <div className={styles.left}>
-            <button className="btn btn--secondary">
-              Attach file
+            <button
+              className="btn btn--secondary"
+              onClick={handleSourceFileAdd}
+            >
+              + Add source file
             </button>
           </div>
           <div className={styles.right}>

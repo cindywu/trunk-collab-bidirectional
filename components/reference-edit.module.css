@@ -53,9 +53,10 @@ textarea.input {
 }
 
 .buttonContainer {
-  margin-top: 20px;
-  text-align: center;
+  margin: 2em 0;
+  padding-bottom: .5em;
   background-color: inherit;
+  border-bottom: 1px solid hsl(0, 0%, 70%);
 }
 
 .labelContainer {
@@ -64,4 +65,10 @@ textarea.input {
 
 .commentsContainer {
   padding: 1em 0;
+}
+
+.lastButtonContainer {
+  margin: 2em 0;
+  padding-bottom: .5em;
+  background-color: inherit;
 }
