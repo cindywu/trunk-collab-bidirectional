@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { v4 as uuidv4 } from 'uuid'
-import {db} from '../../db.js';
+import { db } from '../../db.js'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const pull = req.body;
-  console.log(`Processing pull`, JSON.stringify(pull));
-  const t0 = Date.now();
+  const pull = req.body
+  console.log(`Processing pull`, JSON.stringify(pull))
+  const t0 = Date.now()
 
   try {
     await db.tx(async t => {
@@ -16,14 +15,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             pull.clientID,
           )
         )?.last_mutation_id ?? '0',
-      );
+      )
       const changed = await db.manyOrNone(
         'select id, name, parent, date, description, labels, comments, deleted from reference',
         parseInt(pull.cookie ?? 0),
       )
       const cookie = (
         await db.one('select max(version) as version from reference')
-      ).version;
+      ).version
       console.log({cookie, lastMutationID, changed})
 
       const patch = []
@@ -69,9 +68,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         lastMutationID,
         cookie,
         patch,
-      });
+      })
       res.end()
-    });
+    })
   } catch (e) {
     console.error(e)
     res.status(500).send(e.toString())

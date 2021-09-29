@@ -58,3 +58,10 @@ textarea.input {
   background-color: inherit;
 }
 
+.labelContainer {
+  padding: 1em 0;
+}
+
+.commentsContainer {
+  padding: 1em 0;
+}

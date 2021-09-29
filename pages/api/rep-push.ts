@@ -1,7 +1,14 @@
-import {db} from '../../db.js';
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { db } from '../../db.js'
 import Pusher from 'pusher'
+import {
+  NEXT_PUBLIC_REPLICHAT_PUSHER_APP_ID,
+  NEXT_PUBLIC_REPLICHAT_PUSHER_KEY,
+  NEXT_PUBLIC_REPLICHAT_PUSHER_SECRET,
+  NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER
+} from '../../lib/constants'
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const push = req.body
   console.log('Processing push', JSON.stringify(push))
 
@@ -21,12 +28,12 @@ export default async (req, res) => {
         if (mutation.id < expectedMutationID) {
           console.log(
             `Mutation ${mutation.id} has already been processed - skipping`,
-          );
-          continue;
+          )
+          continue
         }
         if (mutation.id > expectedMutationID) {
           console.warn(`Mutation ${mutation.id} is from the future - aborting`)
-          break;
+          break
         }
 
         console.log('Processing mutation:', JSON.stringify(mutation))
@@ -36,7 +43,7 @@ export default async (req, res) => {
             await createReference(t, mutation.args, version)
             break
           case 'deleteReference':
-            await deleteReference(t, mutation.args, version)
+            await deleteReference(t, mutation.args)
             break
           case 'updateReference':
             await updateReference(t, mutation.args, version)
@@ -46,10 +53,10 @@ export default async (req, res) => {
         }
 
         lastMutationID = expectedMutationID
-        console.log('Processed mutation in', Date.now() - t1);
+        console.log('Processed mutation in', Date.now() - t1)
       }
 
-      await sendPoke();
+      await sendPoke()
 
       console.log(
         'setting',
@@ -69,13 +76,13 @@ export default async (req, res) => {
   } finally {
     console.log('Processed push in', Date.now() - t0)
   }
-};
+}
 
 async function getLastMutationID(t, clientID) {
   const clientRow = await t.oneOrNone(
     'SELECT last_mutation_id FROM reference_replicache_client WHERE id = $1',
     clientID,
-  );
+  )
   if (clientRow) {
     return parseInt(clientRow.last_mutation_id)
   }
@@ -84,7 +91,7 @@ async function getLastMutationID(t, clientID) {
   await t.none(
     'INSERT INTO reference_replicache_client (id, last_mutation_id) VALUES ($1, 0)',
     clientID,
-  );
+  )
   return 0
 }
 
@@ -94,7 +101,7 @@ async function createReference(t, {id, name, parent, date, description, labels, 
       id, name, parent, date, description, labels, comments, version) values
     ($1, $2, $3, $4, $5, $6, $7, $8)`,
     [id, name, parent, date, description, labels, comments, version],
-  );
+  )
 }
 
 async function deleteReference(t, {id}) {
@@ -125,10 +132,10 @@ async function updateReference(t, {id, name, parent, date, description, labels, 
 
 async function sendPoke() {
   const pusher = new Pusher({
-    appId: process.env.NEXT_PUBLIC_REPLICHAT_PUSHER_APP_ID,
-    key: process.env.NEXT_PUBLIC_REPLICHAT_PUSHER_KEY,
-    secret: process.env.NEXT_PUBLIC_REPLICHAT_PUSHER_SECRET,
-    cluster: process.env.NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER,
+    appId: NEXT_PUBLIC_REPLICHAT_PUSHER_APP_ID,
+    key: NEXT_PUBLIC_REPLICHAT_PUSHER_KEY,
+    secret: NEXT_PUBLIC_REPLICHAT_PUSHER_SECRET,
+    cluster: NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER,
     useTLS: true,
   })
   const t0 = Date.now()

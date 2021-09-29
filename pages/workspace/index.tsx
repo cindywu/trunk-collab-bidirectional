@@ -12,6 +12,11 @@ import { useReferences } from '../../components/reference-provider'
 import { Replicache } from 'replicache'
 import Pusher from 'pusher-js'
 
+import {
+  NEXT_PUBLIC_REPLICHAT_PUSHER_KEY,
+  NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER
+} from '../../lib/constants'
+
 export default function Workspace() {
   const [rep, setRep] = useState<Replicache>(null)
   const { handleSetRep } = useReferences()
@@ -57,17 +62,17 @@ export default function Workspace() {
   }, [])
 
   function listen(rep: Replicache){
-    console.log('listening');
+    console.log('listening')
     // Listen for pokes, and pull whenever we get one.
-    Pusher.logToConsole = true;
-    const pusher = new Pusher(process.env.NEXT_PUBLIC_REPLICHAT_PUSHER_KEY!, {
-      cluster: process.env.NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER,
-    });
-    const channel = pusher.subscribe('default');
+    Pusher.logToConsole = true
+    const pusher = new Pusher(NEXT_PUBLIC_REPLICHAT_PUSHER_KEY!, {
+      cluster: NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER,
+    })
+    const channel = pusher.subscribe('default')
     channel.bind('poke', () => {
-      console.log('got poked');
-      rep.pull();
-    });
+      console.log('got poked')
+      rep.pull()
+    })
   }
 
   return (

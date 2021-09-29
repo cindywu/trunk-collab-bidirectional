@@ -160,7 +160,7 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
           value={selectedReference.description}
           className={styles.input} />
       </div>
-      <div>
+      <div className={styles.labelContainer}>
         <label
           htmlFor="labels"
           className={styles.label}>
@@ -191,35 +191,38 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
             Add Label
           </button>
         </div>
-        <label
-          htmlFor="comments"
-          className={styles.label}
-        >
-          Comments
-        </label>
-        <div className={styles.commentGrid}>
-          <div>User</div>
-          <div>Content</div>
-          <div></div>
-          {selectedReference.comments.map((comment: any) => (
-            <ReferenceCommentEdit
-              key={JSON.parse(comment).id}
-              handleCommentChange={handleCommentChange}
-              handleCommentDelete={handleCommentDelete}
-              selectedReference={selectedReference}
-              comment={comment}
-            />
-          ))}
-
-        </div>
-        <div className={styles.buttonContainer}>
-          <button
-            className="btn btn--primary"
-            onClick={handleCommentAdd}
+        <div className={styles.commentsContainer}>
+          <label
+            htmlFor="comments"
+            className={styles.label}
           >
-            Add Comment
-          </button>
+            Comments
+          </label>
+          <div className={styles.commentGrid}>
+            <div>User</div>
+            <div>Content</div>
+            <div></div>
+            {selectedReference.comments.map((comment: any) => (
+              <ReferenceCommentEdit
+                key={JSON.parse(comment).id}
+                handleCommentChange={handleCommentChange}
+                handleCommentDelete={handleCommentDelete}
+                selectedReference={selectedReference}
+                comment={comment}
+              />
+            ))}
+
+          </div>
+          <div className={styles.buttonContainer}>
+            <button
+              className="btn btn--primary"
+              onClick={handleCommentAdd}
+            >
+              Add Comment
+            </button>
+          </div>
         </div>
+
         <div
           className={styles.buttonContainer}
         >

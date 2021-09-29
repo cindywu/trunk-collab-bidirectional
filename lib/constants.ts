@@ -1,12 +1,8 @@
 export const NEXT_PUBLIC_SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
 export const NEXT_PUBLIC_SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+export const NEXT_PUBLIC_SUPABASE_DB_CONNECTION_STRING = process.env.NEXT_PUBLIC_SUPABASE_DB_CONNECTION_STRING
 
-export const DEFAULT_AVATARS_BUCKET = 'avatars'
-
-export type Profile = {
-  id: string
-  avatar_url: string
-  username: string
-  website: string
-  updated_at: string
-}
+export const NEXT_PUBLIC_REPLICHAT_PUSHER_KEY = process.env.NEXT_PUBLIC_REPLICHAT_PUSHER_KEY
+export const NEXT_PUBLIC_REPLICHAT_PUSHER_APP_ID = process.env.NEXT_PUBLIC_REPLICHAT_PUSHER_APP_ID
+export const NEXT_PUBLIC_REPLICHAT_PUSHER_SECRET = process.env.NEXT_PUBLIC_REPLICHAT_PUSHER_SECRET
+export const NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER = process.env.NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER
