@@ -1,25 +1,58 @@
-import React, { useRef } from 'react'
+import React, { useRef, ChangeEvent, useState, useEffect } from 'react'
 import styles from './reference-add.module.css'
 import { useReferences } from './reference-provider'
+import FileUploadButton from './file-upload-button'
 import { v4 as uuidv4 } from 'uuid'
 
 export default function ReferenceAdd() {
   const {
     showReferenceAdd,
     handleReferenceAdd,
-    handleShowReferenceAdd
+    handleShowReferenceAdd,
+    handleSourceFileUpload,
+    session,
   } = useReferences()
 
   const nameRef = useRef<HTMLInputElement>(null)
   const parentRef = useRef<HTMLInputElement>(null)
   const titleRef = useRef<HTMLTextAreaElement>(null)
+  const id = uuidv4()
+
+  const [fileId, setFileId] = useState(uuidv4())
+  const [file, setFile] = useState<File>()
+  const [sourceUrl, setSourceUrl] = useState('')
+
+  const [loading, setLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    setSourceUrl(`${session?.user.id}/${id}/${fileId}.pdf`)
+  }, [session, fileId])
+
+  function handleSourceFileChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    setFile(file)
+    const fileId = uuidv4()
+    setFileId(fileId)
+    // handleSourceFileUpload(file, fileId)
+  }
 
   function handleSaveReference(){
     const date = new Date()
     const myDate = (date.toLocaleString('default', { month: 'short'})) + " " + date.getUTCDate()
 
+    // console.log('file', file)
+    // if (file) {
+    //   const fileExt = file.name.split('.').pop()
+    //   const newFile =`${id}/${fileId}`
+    //   const sourceUrl = `${session?.user.id}/${newFile}.${fileExt}`
+    //   setSourceUrl(sourceUrl)
+    // }
+
+    console.log('file', file)
+
     const newReference = {
-      id: uuidv4(),
+      id: id,
+      source_url: file != undefined ? sourceUrl : '',
       name: nameRef.current ? nameRef.current.value : '',
       parent: parentRef.current ? parentRef.current.value : '',
       date: myDate,
@@ -40,10 +73,6 @@ export default function ReferenceAdd() {
       ],
     }
     handleReferenceAdd(newReference)
-  }
-
-  function handleSourceFileAdd(){
-    console.log('I am in handleSourceFileAdd')
   }
 
   return (
@@ -91,11 +120,12 @@ export default function ReferenceAdd() {
         </div>
         <div className={styles.buttonContainer}>
           <div className={styles.left}>
-            <button
-              className="btn btn--secondary"
-              onClick={handleSourceFileAdd}
-            >
-              + Add source file
+            <button className="btn btn--secondary">
+              {/* <FileUploadButton
+                onUpload={handleSourceFileChange}
+                loading={loading}
+                sourceUrl={file !== undefined ? sourceUrl: ''}
+              /> */}
             </button>
           </div>
           <div className={styles.right}>

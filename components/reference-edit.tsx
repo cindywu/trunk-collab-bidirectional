@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, ChangeEvent } from 'react'
 import styles from './reference-edit.module.css'
 import ReferenceLabelEdit from './reference-label-edit'
 import ReferenceCommentEdit from './reference-comment-edit'
 import { useReferences } from './reference-provider'
 import { ILabel, IComment, IReference } from '../interfaces'
 import { v4 as uuidv4 } from 'uuid'
+import FileUploadButton from './file-upload-button'
+import SourceFileCard from './source-file-card'
 
 type Props = {
   selectedReference: IReference,
@@ -19,10 +21,18 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
     handleReferenceChange,
     handleReferenceExpandChange,
     expandSelectedReference,
+    handleSourceFileUpload
   } = useReferences()
+
+  const [loading, setLoading] = useState(false)
 
   if (selectedReference === undefined) {
     return null
+  }
+
+  function handleSourceFileChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    handleSourceFileUpload(file, selectedReference)
   }
 
   function handleChange(changes: object){
@@ -85,10 +95,6 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
     handleChange({
       comments: obj.filter((comment: string) => JSON.parse(comment).id !== id)
     })
-  }
-
-  function handleSourceFileAdd() {
-    console.log('I am in handleSourceFileAdd')
   }
 
   return (
@@ -222,15 +228,17 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
           <div className={styles.buttonContainer}>
             <button
               className="btn btn--secondary"
-              onClick={handleSourceFileAdd}
             >
-           + Add source file
+            <FileUploadButton
+              onUpload= {handleSourceFileChange}
+              loading = {loading}
+              sourceUrl = {selectedReference.source_url}
+            />
            </button>
           </div>
-          <div>
-            No source file
-          </div>
-
+          <SourceFileCard
+            selectedReference={selectedReference}
+          />
         </div>
         <div className={styles.archiveContainer}>
           <label htmlFor="archiveReference" className={styles.label}/>

@@ -1,7 +1,11 @@
-import React, { useState, createContext, useContext, useEffect } from 'react'
+import React, { useState, createContext, useContext, useEffect, } from 'react'
 import { IReference } from '../interfaces'
 import { AuthSession } from '@supabase/supabase-js'
 import { Replicache } from 'replicache'
+import { idbOK } from '../utils'
+import { v4 as uuidv4 } from 'uuid'
+import { supabase } from '../lib/supabaseClient'
+import { DEFAULT_SOURCE_FILES_BUCKET } from '../lib/constants'
 
 type ReferencesContextType = {
   selectedReferenceId: string | undefined
@@ -16,6 +20,7 @@ type ReferencesContextType = {
   handleReferenceExpandChange: () => void
   handleSetRep: (rep: any) => void
   session: AuthSession
+  handleSourceFileUpload: (file: File, reference: IReference) => void
 }
 
 const defaultContextValue = {
@@ -30,7 +35,8 @@ const defaultContextValue = {
   handleShowReferenceAdd: () => {},
   handleReferenceExpandChange: () => {},
   handleSetRep: (rep: any) => {},
-  session: null
+  session: null,
+  handleSourceFileUpload: (file: File, reference: IReference) => {},
 }
 
 export const ReferencesContext = createContext<ReferencesContextType>(defaultContextValue)
@@ -67,7 +73,76 @@ export const ReferenceProvider = ({ children } : ReferenceProviderProps) => {
     handleShowReferenceAdd,
     handleReferenceExpandChange,
     handleSetRep,
-    session
+    session,
+    handleSourceFileUpload
+  }
+
+  function handleSourceFileUpload(file: File, reference: IReference) {
+    if (!idbOK()) return
+
+    let openRequest = indexedDB.open('trunk_idb1', 1)
+
+    openRequest.onupgradeneeded = function(event: any) {
+      let thisDB = event.target.result
+      if (!thisDB.objectStoreNames.contains('source-files')) {
+        thisDB.createObjectStore('source-files', { keyPath: 'id' })
+      }
+    }
+
+    openRequest.onsuccess = function(event: any) {
+      let db = event.target.result
+      let tx = db.transaction(['source-files'], 'readwrite')
+      let store = tx.objectStore('source-files')
+
+      const fileID = uuidv4()
+      const refID = reference.id
+      const newFileID = `${refID}/${fileID}`
+
+      const newFile = {
+        id: newFileID,
+        file: file
+      }
+
+      let request = store.add(newFile)
+
+      request.onerror = function(event: any) {
+        console.log('error', event.target.error.name)
+      }
+
+      request.onsuccess = function(event: any) {
+        uploadSourceFile(file, fileID, reference)
+      }
+    }
+
+    openRequest.onerror = function(event: any) {
+      console.dir(event)
+    }
+  }
+
+  async function uploadSourceFile(file: File, fileID: string, reference: IReference){
+    try {
+
+      const user = session.user
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${user.id}/${reference.id}/${fileID}.${fileExt}`
+      const filePath = fileName
+
+      let payload = {...reference, source_url: filePath }
+      handleReferenceChange(payload)
+
+      let { error : uploadError } = await supabase.storage
+        .from(DEFAULT_SOURCE_FILES_BUCKET)
+        .upload(filePath, file)
+
+      if (uploadError) {
+        throw uploadError
+      }
+
+    } catch (error) {
+      alert(error.message)
+    } finally {
+
+    }
   }
 
   function handleReferenceSelect(id: string){
@@ -101,6 +176,7 @@ export const ReferenceProvider = ({ children } : ReferenceProviderProps) => {
     if (rep != undefined) {
       rep.mutate.updateReference({
         id: reference.id,
+        source_url: reference.source_url,
         name: reference.name,
         parent: reference.parent,
         date: reference.date,

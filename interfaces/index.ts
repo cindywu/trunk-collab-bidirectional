@@ -1,5 +1,6 @@
 export type IReference = {
   id: string
+  source_url: string,
   name: string
   parent: string
   date: string
