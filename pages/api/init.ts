@@ -1,6 +1,7 @@
-import { db } from '../../db.js'
+import { db } from '../../db'
+import type { NextApiResponse } from 'next'
 
-export default async (_, res) => {
+export default async (_ : any, res: NextApiResponse) => {
   await db.task(async t => {
     await t.none('DROP TABLE IF EXISTS reference')
     await t.none('DROP TABLE IF EXISTS reference_replicache_client')

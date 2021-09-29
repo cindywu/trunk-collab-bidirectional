@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { db } from '../../db.js'
+import { db } from '../../db'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const pull = req.body

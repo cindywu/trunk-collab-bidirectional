@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { db } from '../../db.js'
+import { db } from '../../db'
 import Pusher from 'pusher'
 import {
   NEXT_PUBLIC_REPLICHAT_PUSHER_APP_ID,
