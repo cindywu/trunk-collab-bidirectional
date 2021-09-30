@@ -90,7 +90,7 @@ export const ReferenceProvider = ({ children } : ReferenceProviderProps) => {
 
       const fileID = uuidv4()
       const refID = reference.id
-      const newFileID = `${refID}/${fileID}`
+      const newFileID = `${session.user.id}/${refID}/${fileID}.pdf`
 
       const newFile = {
         id: newFileID,
