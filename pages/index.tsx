@@ -7,6 +7,8 @@ import styles from '../styles/home.module.css'
 import { supabase } from '../lib/supabaseClient'
 import Auth from '../components/auth'
 
+import { LOCAL_STORAGE_AUTH_TOKEN_KEY } from '../lib/constants'
+
 export default function Home() {
   const [session, setSession] = useState<AuthSession | null>(null)
   const { user } = session || {}
@@ -15,6 +17,8 @@ export default function Home() {
     supabase.auth.onAuthStateChange((_event: string, session: AuthSession | null) => {
       setSession(session)
     })
+    const session = localStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN_KEY)
+    setSession(JSON.parse(session).currentSession)
   }, [])
 
   return (

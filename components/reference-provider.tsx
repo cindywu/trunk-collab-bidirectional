@@ -114,8 +114,8 @@ export const ReferenceProvider = ({ children } : ReferenceProviderProps) => {
   }
 
   async function uploadSourceFile(file: File, fileID: string, reference: IReference){
+    !session && setSession(JSON.parse(localStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN_KEY)).currentSession)
     try {
-
       const user = session.user
       const fileExt = file.name.split('.').pop()
       const fileName = `${user.id}/${reference.id}/${fileID}.${fileExt}`
