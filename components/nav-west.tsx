@@ -3,6 +3,7 @@ import Link from 'next/link'
 import styles from './nav-west.module.css'
 import { supabase } from '../lib/supabaseClient'
 import { Offline, Online } from 'react-detect-offline'
+import { LOCAL_STORAGE_AUTH_TOKEN_KEY } from '../lib/constants'
 
 export default function NavWest() {
   const [email, setEmail] = useState<string>()
@@ -13,7 +14,7 @@ export default function NavWest() {
   }
 
   useEffect(() => {
-    const session = localStorage.getItem('supabase.auth.token')
+    const session = localStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN_KEY)
     session ? setEmail(JSON.parse(session).currentSession.user.email) : setEmail('guest')
   }, [])
 

@@ -8,3 +8,4 @@ export const NEXT_PUBLIC_REPLICHAT_PUSHER_SECRET = process.env.NEXT_PUBLIC_REPLI
 export const NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER = process.env.NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER
 
 export const DEFAULT_SOURCE_FILES_BUCKET = 'source-files'
+export const LOCAL_STORAGE_AUTH_TOKEN_KEY = 'supabase.auth.token'

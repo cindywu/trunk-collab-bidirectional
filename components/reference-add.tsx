@@ -3,14 +3,15 @@ import styles from './reference-add.module.css'
 import { useReferences } from './reference-provider'
 import FileUploadButton from './file-upload-button'
 import { v4 as uuidv4 } from 'uuid'
+import { LOCAL_STORAGE_AUTH_TOKEN_KEY } from '../lib/constants'
+import { AuthSession } from '@supabase/supabase-js'
 
 export default function ReferenceAdd() {
   const {
     showReferenceAdd,
     handleReferenceAdd,
     handleShowReferenceAdd,
-    handleSourceFileUpload,
-    session,
+    handleSourceFileUpload
   } = useReferences()
 
   const nameRef = useRef<HTMLInputElement>(null)
@@ -21,8 +22,14 @@ export default function ReferenceAdd() {
   const [fileId, setFileId] = useState(uuidv4())
   const [file, setFile] = useState<File>()
   const [sourceUrl, setSourceUrl] = useState('')
+  const [session, setSession] = useState<AuthSession | null>()
 
   const [loading, setLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    const session = localStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN_KEY)
+    setSession(session ? JSON.parse(session).currentSession : null)
+  },[])
 
   useEffect(() => {
     setSourceUrl(`${session?.user.id}/${id}/${fileId}.pdf`)

@@ -6,6 +6,7 @@ import { idbOK } from '../utils'
 import { v4 as uuidv4 } from 'uuid'
 import { supabase } from '../lib/supabaseClient'
 import { DEFAULT_SOURCE_FILES_BUCKET } from '../lib/constants'
+import { LOCAL_STORAGE_AUTH_TOKEN_KEY } from '../lib/constants'
 
 type ReferencesContextType = {
   selectedReferenceId: string | undefined
@@ -19,7 +20,6 @@ type ReferencesContextType = {
   handleShowReferenceAdd: () => void
   handleReferenceExpandChange: () => void
   handleSetRep: (rep: any) => void
-  session: AuthSession
   handleSourceFileUpload: (file: File, reference: IReference) => void
 }
 
@@ -35,7 +35,6 @@ const defaultContextValue = {
   handleShowReferenceAdd: () => {},
   handleReferenceExpandChange: () => {},
   handleSetRep: (rep: any) => {},
-  session: null,
   handleSourceFileUpload: (file: File, reference: IReference) => {},
 }
 
@@ -45,21 +44,17 @@ type ReferenceProviderProps = {
   children: React.ReactNode
 }
 
-const LOCAL_STORAGE_KEY = 'supabase.auth.token'
-
 export const ReferenceProvider = ({ children } : ReferenceProviderProps) => {
   const [showReferenceAdd, setShowReferenceAdd] = useState<boolean>(false)
   const [selectedReferenceId, setSelectedReferenceId] = useState<string | undefined>()
   const [expandSelectedReference, setExpandSelectedReference] = useState<boolean>(false)
   const [rep, setRep] = useState<any>()
-  const [session, setSession] = useState<AuthSession>(null)
+  const [session, setSession] = useState<AuthSession | null>()
 
   useEffect(() => {
-    const session = localStorage.getItem(LOCAL_STORAGE_KEY)
-    if (session != null) (
-      setSession(JSON.parse(session).currentSession)
-    )
-  }, [])
+    const session = localStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN_KEY)
+    setSession(session ? JSON.parse(session).currentSession : null)
+  },[])
 
   const referencesContextValue = {
     selectedReferenceId,
@@ -73,7 +68,6 @@ export const ReferenceProvider = ({ children } : ReferenceProviderProps) => {
     handleShowReferenceAdd,
     handleReferenceExpandChange,
     handleSetRep,
-    session,
     handleSourceFileUpload
   }
 
