@@ -10,11 +10,13 @@ type Props = {
 export default function SourceFileCard({ selectedReference } : Props) {
   const [localUrl, setLocalUrl] = useState<string | null>(null)
 
-  const { source_url } = selectedReference
+  useEffect(() => {
+    !localUrl && downloadSourceFile()
+  }, [localUrl])
 
   useEffect(() => {
     generateSourceFileUrl()
-  }, [source_url])
+  }, [selectedReference.source_url])
 
   function generateSourceFileUrl() {
     if (!idbOK()) return
@@ -34,7 +36,7 @@ export default function SourceFileCard({ selectedReference } : Props) {
       let tx = db.transaction(['source-files'], 'readonly')
       let store = tx.objectStore('source-files')
 
-      let request = store.get(source_url)
+      let request = store.get(selectedReference.source_url)
 
       request.onerror = function(event: any) {
         console.log('error', event.target.error.name)
@@ -61,7 +63,7 @@ export default function SourceFileCard({ selectedReference } : Props) {
 
   async function downloadSourceFile(){
     try {
-      const { data, error } = await supabase.storage.from(DEFAULT_SOURCE_FILES_BUCKET).download(source_url)
+      const { data, error } = await supabase.storage.from(DEFAULT_SOURCE_FILES_BUCKET).download(selectedReference.source_url)
 
       if (error) {
         throw error
@@ -93,7 +95,7 @@ export default function SourceFileCard({ selectedReference } : Props) {
       let store = tx.objectStore('source-files')
 
       let newFile = {
-        id: source_url,
+        id: selectedReference.source_url,
         file: data
       }
 
@@ -130,7 +132,7 @@ export default function SourceFileCard({ selectedReference } : Props) {
       let tx = db.transaction(['source-files'], 'readwrite')
       let store = tx.objectStore('source-files')
 
-      let request = store.delete(source_url)
+      let request = store.delete(selectedReference.source_url)
 
       request.onerror = function(event: any) {
         console.log('error', event.target.error.name)
@@ -162,7 +164,7 @@ export default function SourceFileCard({ selectedReference } : Props) {
       </div>
     </div>
   ) : (
-    source_url ? (
+    selectedReference.source_url ? (
       <div>
         source_url present but no local file
         <button onClick={handleFetch}>
