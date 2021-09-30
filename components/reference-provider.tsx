@@ -21,6 +21,7 @@ type ReferencesContextType = {
   handleReferenceExpandChange: () => void
   handleSetRep: (rep: any) => void
   handleSourceFileUpload: (file: File, reference: IReference) => void
+  handleDraftSourceFileUpload: (file: File, source_url: string) => void
 }
 
 const defaultContextValue = {
@@ -36,6 +37,7 @@ const defaultContextValue = {
   handleReferenceExpandChange: () => {},
   handleSetRep: (rep: any) => {},
   handleSourceFileUpload: (file: File, reference: IReference) => {},
+  handleDraftSourceFileUpload: (file: File, source_url: string) => {},
 }
 
 export const ReferencesContext = createContext<ReferencesContextType>(defaultContextValue)
@@ -68,7 +70,47 @@ export const ReferenceProvider = ({ children } : ReferenceProviderProps) => {
     handleShowReferenceAdd,
     handleReferenceExpandChange,
     handleSetRep,
-    handleSourceFileUpload
+    handleSourceFileUpload,
+    handleDraftSourceFileUpload,
+  }
+
+  function handleDraftSourceFileUpload(file: File, source_url: string){
+    if (!idbOK()) return
+
+    let openRequest = indexedDB.open('trunk_idb1', 1)
+
+    openRequest.onupgradeneeded = function(event: any) {
+      let thisDB = event.target.result
+      if (!thisDB.objectStoreNames.contains('source-files')) {
+        thisDB.createObjectStore('source-files', { keyPath: 'id' })
+      }
+    }
+
+    openRequest.onsuccess = function(event: any) {
+      let db = event.target.result
+      let tx = db.transaction('source-files', 'readwrite')
+      let store = tx.objectStore('source-files')
+
+      const newFile = {
+        id: source_url,
+        file: file,
+      }
+
+      let request = store.add(newFile)
+
+      request.onerror = function(event: any) {
+        console.log('error', event.target.error.name)
+      }
+
+      request.onsuccess = function(event: any) {
+
+      }
+    }
+
+    openRequest.onerror = function(event: any) {
+      console.dir(event)
+    }
+
   }
 
   function handleSourceFileUpload(file: File, reference: IReference) {
