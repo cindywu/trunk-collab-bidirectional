@@ -1,0 +1,28 @@
+.sourceFileContainer {
+  display: flex;
+}
+
+.sourceFileContainer > div {
+  padding: .5em;
+}
+
+.sourceFile {
+  margin-right: 4em;
+}
+
+.deleteSourceFile {
+  cursor: pointer;
+}
+
+.deleteSourceFile:hover {
+  background: hsl(0, 0%, 90%);
+}
+
+.deleteSourceFileButton {
+  border: none;
+  font-size: inherit;
+  color: inherit;
+  margin: 0;
+  background: none;
+  padding: 0;
+}
