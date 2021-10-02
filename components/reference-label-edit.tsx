@@ -4,7 +4,7 @@ import type { ILabel } from '../interfaces'
 
 type Props = {
   label: ILabel
-  handleLabelChange: (id: string, label: ILabel) => void
+  handleLabelChange: (label: ILabel) => void
   handleLabelDelete: (id: string) => void
 }
 
@@ -16,7 +16,7 @@ export default function ReferenceLabelEdit(props : Props) {
   } = props
 
   function handleChange(changes: object) {
-    handleLabelChange(label.id, { ...label, ...changes})
+    handleLabelChange({ ...label, ...changes})
   }
 
   return (

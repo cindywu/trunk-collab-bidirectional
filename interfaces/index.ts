@@ -4,7 +4,7 @@ export type IReference = {
   parent: string
   date: string
   description: string
-  labels: ILabel[]
+  labels: any
   comments: IComment[]
 }
 

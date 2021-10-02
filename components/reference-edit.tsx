@@ -31,11 +31,11 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
     setSelectedReference(payload)
   }
 
-  function handleLabelChange(id: string, label: ILabel) {
+  function handleLabelChange(label: ILabel) {
     if (selectedReference !== undefined) {
       const newLabels = [...selectedReference.labels]
-      const index = newLabels.findIndex(i => i.id === id)
-      newLabels[index] = label
+      const index = newLabels.findIndex(i =>(JSON.parse(i)).id === label.id)
+      newLabels[index] = JSON.stringify(label)
       handleChange({ labels: newLabels })
     }
   }
