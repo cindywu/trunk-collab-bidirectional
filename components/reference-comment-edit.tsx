@@ -4,9 +4,8 @@ import { IComment, IReference } from '../interfaces'
 
 type Props = {
   comment: IComment
-  handleCommentChange: (id: string, comment: IComment) => void
+  handleCommentChange: (comment: IComment) => void
   handleCommentDelete: (id: string) => void
-  selectedReference: IReference
 }
 
 export default function ReferenceCommentEdit(props : Props) {
@@ -16,15 +15,8 @@ export default function ReferenceCommentEdit(props : Props) {
     handleCommentDelete
   } = props
 
-  let obj: { user: string; content: string; id: string }
-
-  typeof(comment) === 'object' ?
-    obj = comment
-    :
-    obj = JSON.parse(comment)
-
   function handleChange(changes: object) {
-    handleCommentChange(comment.id, { ...comment, ...changes})
+    handleCommentChange({ ...comment, ...changes})
   }
 
   return (
@@ -34,18 +26,18 @@ export default function ReferenceCommentEdit(props : Props) {
         type="text"
         autoComplete="none"
         onChange={(e) => handleChange({ user: e.target.value })}
-        value={obj.user}
+        value={comment.user}
       />
       <input
         className={styles.input}
         type="text"
         autoComplete="none"
         onChange={(e) => handleChange({ content: e.target.value })}
-        value={obj.content}
+        value={comment.content}
       />
       <button
         className="btn btn--danger"
-        onClick={() => handleCommentDelete(obj.id)}
+        onClick={() => handleCommentDelete(comment.id)}
       >
         &times;
       </button>

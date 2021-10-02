@@ -55,14 +55,13 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
     })
   }
 
-  function handleCommentChange(id: string, comment: IComment) {
+  function handleCommentChange(comment: IComment) {
     if (selectedReference !== undefined) {
       const newComments = [...selectedReference.comments]
-      const index = newComments.findIndex(i => i.id === id)
-      newComments[index] = comment
+      const index = newComments.findIndex(i => (JSON.parse(i)).id === comment.id)
+      newComments[index] = JSON.stringify(comment)
       handleChange({ comments: newComments })
     }
-
   }
 
   const handleCommentAdd = () => {
@@ -207,8 +206,7 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
                 key={JSON.parse(comment).id}
                 handleCommentChange={handleCommentChange}
                 handleCommentDelete={handleCommentDelete}
-                selectedReference={selectedReference}
-                comment={comment}
+                comment={JSON.parse(comment)}
               />
             ))}
 

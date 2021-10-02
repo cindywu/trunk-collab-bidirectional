@@ -5,7 +5,7 @@ export type IReference = {
   date: string
   description: string
   labels: any
-  comments: IComment[]
+  comments: any
 }
 
 export type ILabel = {
