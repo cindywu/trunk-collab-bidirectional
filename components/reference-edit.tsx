@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from './reference-edit.module.css'
 import ReferenceLabelEdit from './reference-label-edit'
 import ReferenceCommentEdit from './reference-comment-edit'
@@ -10,7 +10,6 @@ type Props = {
   selectedReference: IReference,
   setSelectedReference: (reference: IReference) => void,
 }
-
 
 export default function ReferenceEdit({ selectedReference, setSelectedReference }: Props) {
   const {
@@ -50,8 +49,9 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
   }
 
   const handleLabelDelete = (id: string) => {
+    const index = selectedReference.labels.findIndex((label: any) =>(JSON.parse(label)).id === id)
     handleChange({
-      labels: selectedReference.labels.filter((label: ILabel) => label.id !== id)
+      labels: selectedReference.labels.filter((_ : any, i: number) => i !== index)
     })
   }
 
