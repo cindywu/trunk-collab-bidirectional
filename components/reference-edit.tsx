@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState, ChangeEvent } from 'react'
 import styles from './reference-edit.module.css'
 import ReferenceLabelEdit from './reference-label-edit'
 import ReferenceCommentEdit from './reference-comment-edit'
 import { useReferences } from './reference-provider'
 import { ILabel, IComment, IReference } from '../interfaces'
 import { v4 as uuidv4 } from 'uuid'
+import FileUploadButton from './file-upload-button'
+import SourceFileCard from './source-file-card'
 
 type Props = {
   selectedReference: IReference,
@@ -18,10 +20,18 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
     handleReferenceChange,
     handleReferenceExpandChange,
     expandSelectedReference,
+    handleSourceFileUpload
   } = useReferences()
+
+  const [loading, setLoading] = useState(false)
 
   if (selectedReference === undefined) {
     return null
+  }
+
+  function handleSourceFileChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    handleSourceFileUpload(file, selectedReference)
   }
 
   function handleChange(changes: object){
@@ -160,11 +170,16 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
           className={styles.input} />
       </div>
       <div className={styles.labelContainer}>
-        <label
-          htmlFor="labels"
-          className={styles.label}>
-          Labels
-        </label>
+        <label htmlFor="labels" className={styles.label}/>
+
+        <div className={styles.buttonContainer}>
+          <button
+            className="btn btn--secondary"
+            onClick={handleLabelAdd}
+          >
+            + Add label
+          </button>
+        </div>
         <div className={styles.labelGrid}>
           <div>
             Name
@@ -182,21 +197,16 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
             />
           ))}
         </div>
-        <div className={styles.buttonContainer}>
-          <button
-            className="btn btn--primary"
-            onClick={handleLabelAdd}
-          >
-            Add Label
-          </button>
-        </div>
         <div className={styles.commentsContainer}>
-          <label
-            htmlFor="comments"
-            className={styles.label}
-          >
-            Comments
-          </label>
+          <label htmlFor="comments" className={styles.label}/>
+          <div className={styles.buttonContainer}>
+            <button
+              className="btn btn--secondary"
+              onClick={handleCommentAdd}
+            >
+              + Add comment
+            </button>
+          </div>
           <div className={styles.commentGrid}>
             <div>User</div>
             <div>Content</div>
@@ -209,27 +219,37 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
                 comment={JSON.parse(comment)}
               />
             ))}
-
-          </div>
-          <div className={styles.buttonContainer}>
-            <button
-              className="btn btn--primary"
-              onClick={handleCommentAdd}
-            >
-              Add Comment
-            </button>
           </div>
         </div>
-
-        <div
-          className={styles.buttonContainer}
-        >
-          <button
-            className="btn btn--secondary"
-            onClick={() => handleReferenceArchive(selectedReference.id)}
+        <div className={styles.sourceFileContainer}>
+          <label htmlFor="sourceFile" className={styles.label}/>
+          <div className={styles.buttonContainer}>
+            <button
+              className="btn btn--secondary"
+            >
+            <FileUploadButton
+              onUpload= {handleSourceFileChange}
+              loading = {loading}
+              sourceUrl = {selectedReference.source_url}
+            />
+           </button>
+          </div>
+          <SourceFileCard
+            selectedReference={selectedReference}
+          />
+        </div>
+        <div className={styles.archiveContainer}>
+          <label htmlFor="archiveReference" className={styles.label}/>
+          <div
+            className={styles.lastButtonContainer}
           >
-            Archive
-          </button>
+            <button
+              className="btn btn--secondary"
+              onClick={() => handleReferenceArchive(selectedReference.id)}
+            >
+              Archive reference
+            </button>
+          </div>
         </div>
       </div>
     </div>
