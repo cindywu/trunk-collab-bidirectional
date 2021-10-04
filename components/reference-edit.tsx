@@ -45,7 +45,7 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
       name: 'new label',
       color: 'red',
     }
-    handleChange({ labels: [...selectedReference.labels, newLabel]})
+    handleChange({ labels: [...selectedReference.labels, JSON.stringify(newLabel)]})
   }
 
   const handleLabelDelete = (id: string) => {
