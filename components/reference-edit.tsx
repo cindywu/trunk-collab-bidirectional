@@ -116,6 +116,12 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
         </button>
       </div>
       <div className={styles.detailsGrid}>
+        <div>
+          UUID
+        </div>
+        <div>
+          {selectedReference.id}
+        </div>
         <label
           htmlFor="name"
           className={styles.label}
