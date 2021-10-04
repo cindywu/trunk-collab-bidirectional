@@ -35,7 +35,7 @@ export default function CommentForm({ selectedReference } : Props) {
       user: email,
       content: contentRef.current && contentRef.current.value,
     }
-    selectedReference && handleChange({ comments: [...selectedReference.comments, newComment]})
+    selectedReference && handleChange({ comments: [...selectedReference.comments, JSON.stringify(newComment)]})
     contentRef.current && (contentRef.current.value = '')
   }
 

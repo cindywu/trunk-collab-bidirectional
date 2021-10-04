@@ -27,7 +27,7 @@ export default function NavEast({ rep } : Props) {
     findSelectedReference()
     :
     setSelectedReference(null)
-  }, [selectedReferenceId])
+  }, [selectedReferenceId, references])
 
   function findSelectedReference(){
     references.map(([k, v]: [string, IReference]) => {
