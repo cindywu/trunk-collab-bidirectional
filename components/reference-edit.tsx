@@ -70,7 +70,7 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
       user: 'cindy',
       content: ''
     }
-    handleChange({ comments: [...selectedReference.comments, newComment]})
+    handleChange({ comments: [...selectedReference.comments, JSON.stringify(newComment)]})
   }
 
   const handleCommentDelete = (id: string) => {
