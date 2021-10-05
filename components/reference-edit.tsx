@@ -3,11 +3,12 @@ import styles from './reference-edit.module.css'
 import ReferenceLabelEdit from './reference-label-edit'
 import ReferenceCommentEdit from './reference-comment-edit'
 import { useReferences } from './reference-provider'
-import { ILabel, IComment, IReference } from '../interfaces'
+import { ILabel, IComment, IReference, ILink } from '../interfaces'
 import { v4 as uuidv4 } from 'uuid'
 import FileUploadButton from './file-upload-button'
 import SourceFileCard from './source-file-card'
 import ReferenceAuthorEdit from './reference-author-edit'
+import ReferenceLinkEdit from './reference-link-edit'
 
 type Props = {
   selectedReference: IReference,
@@ -24,7 +25,6 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
     handleSourceFileUpload
   } = useReferences()
 
-  console.log("selectedReference", selectedReference)
   const [loading, setLoading] = useState(false)
 
   if (selectedReference === undefined) {
@@ -182,6 +182,39 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
     return potatoName
   }
 
+  function handleLinkAdd() {
+    const newLink = {
+      id: uuidv4(),
+      reference_id: '',
+      type: 'standard'
+    }
+    handleChange({ links: [...selectedReference.links, JSON.stringify(newLink)]})
+
+  }
+
+  function handleLinkChange(link: ILink) {
+    if (selectedReference !== undefined) {
+      const newLinks = [...selectedReference.links]
+      const index = newLinks.findIndex(i => (JSON.parse(i)).id === link.id)
+      newLinks[index] = JSON.stringify(link)
+      handleChange({ links: newLinks })
+    }
+  }
+
+  function handleLinkDelete(id: string) {
+    let obj
+
+    typeof(selectedReference.links) === 'object' ?
+      obj  = selectedReference.links
+      :
+      obj = JSON.parse(selectedReference.links)
+
+    handleChange({
+      links: obj.filter((link: string) => JSON.parse(link).id !== id)
+    })
+
+  }
+
   return (
     selectedReference &&
     <div className={styles.container}>
@@ -225,7 +258,8 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
           value={selectedReference.name}
           onChange={e => handleChange({ name: e.target.value })}
           className={styles.input} /> */}
-         <label
+
+        {/* <label
           htmlFor="name"
           className={styles.label}
         >
@@ -237,7 +271,8 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
           value={selectedReference.name}
           onChange={e => handleChange({ name: e.target.value })}
           className={styles.input}
-          spellCheck="false" />
+          spellCheck="false" /> */}
+
         <label
           htmlFor="parent"
           className={styles.label}
@@ -290,6 +325,34 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
           onChange={e => handleChange({ description: e.target.value })}
           value={selectedReference.description}
           className={styles.input} />
+      </div>
+      <div className={styles.linksContainer}>
+        <label htmlFor="links" className={styles.label}/>
+        <div className={styles.buttonContainer}>
+          <button
+            className="btn btn--secondary"
+            onClick={handleLinkAdd}
+          >
+            + Add link
+          </button>
+        </div>
+        <div className={styles.labelGrid}>
+          <div>
+            Reference ID
+          </div>
+          <div>
+            Type
+          </div>
+          <div></div>
+          {selectedReference.links.map((link: any) => (
+            <ReferenceLinkEdit
+              handleLinkChange={handleLinkChange}
+              handleLinkDelete={handleLinkDelete}
+              link={JSON.parse(link)}
+              key={JSON.parse(link).id}
+            />
+          ))}
+        </div>
       </div>
       <div className={styles.authorsContainer}>
         <label htmlFor="authors" className={styles.label}/>

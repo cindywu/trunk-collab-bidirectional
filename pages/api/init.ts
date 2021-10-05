@@ -9,6 +9,7 @@ export default async (_ : any, res: NextApiResponse) => {
     // Stores chat messages
     await t.none(`CREATE TABLE reference (
       id VARCHAR(255) PRIMARY KEY NOT NULL,
+      links TEXT ARRAY NOT NULL,
       publication_date TEXT NOT NULL,
       authors TEXT ARRAY NOT NULL,
       source_url TEXT NOT NULL,

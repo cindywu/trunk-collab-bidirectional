@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent} from 'react'
+import React, { useState, ChangeEvent, useEffect} from 'react'
 import CommentList from './comment-list'
 import CommentForm from './comment-form'
 import SourceFileCard from './source-file-card'
@@ -6,14 +6,36 @@ import { useReferences } from './reference-provider'
 import FileUploadButton from './file-upload-button'
 import styles from './reference-view.module.css'
 import type { IReference } from '../interfaces'
+import Reference from './reference'
 
 type Props = {
   selectedReference: IReference
+  references: any
 }
 
-export default function ReferenceView({ selectedReference }: Props) {
+export default function ReferenceView({ selectedReference, references}: Props) {
   const [loading, setLoading] = useState(false)
   const { handleSourceFileUpload } = useReferences()
+  const [hideLinks, setHideLinks] = useState(true)
+  const [links, setLinks] = useState<any>()
+
+  useEffect(() => {
+    getLinks()
+  }, [])
+
+  function getLinks() {
+    let links = []
+    selectedReference && selectedReference.links.map(link => {
+      const index = references.findIndex((reference) =>
+        JSON.parse(link).reference_id === reference[0].substring(4)
+      )
+      if (index !== -1) {
+        links.push(references[index])
+      }
+    })
+    setLinks(links)
+  }
+
 
   function handleSourceFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
@@ -91,6 +113,22 @@ export default function ReferenceView({ selectedReference }: Props) {
           + Add sub-references
         </button>
       </div>
+      <div onClick={() => setHideLinks(!hideLinks)}>
+        {links && links.length} links
+      </div>
+      <div>
+        {!hideLinks && links.map((link) =>
+          <div>
+            <Reference
+              key={link[0]}
+              id={link[0]}
+              value={link[1]}
+              selectedReference={selectedReference}
+              references={references}
+            />
+          </div>
+        )}
+      </div>
       <div className={styles.buttonContainer}>
         <button
           className={`${styles.subReferenceButton} btn btn-secondary`}
@@ -98,7 +136,7 @@ export default function ReferenceView({ selectedReference }: Props) {
           <FileUploadButton
             onUpload= {handleSourceFileChange}
             loading = {loading}
-            sourceUrl = {selectedReference.source_url} //fix this add selectedReference.sourceUrl
+            sourceUrl = {selectedReference.source_url}
           />
         </button>
       </div>

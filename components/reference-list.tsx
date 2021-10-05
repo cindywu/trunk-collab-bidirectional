@@ -18,6 +18,7 @@ export default function ReferenceList({ references, selectedReference } : Props)
             value={v}
             id={k}
             selectedReference={selectedReference}
+            references={references}
           />
         )
       })}

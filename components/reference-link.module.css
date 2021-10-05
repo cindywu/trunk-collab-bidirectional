@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  cursor: default;
+  padding: 1em 2em 1em 3em;
+  background-color: hsl(210, 8%, 93%)
+}
+
+.container:hover {
+  background-color: hsl(210, 8%, 93%);
+}
+
+.identifier {
+  color: hsl(0, 0%, 33%);
+}
+
+.title {
+  color: hsl(0, 0%, 33%);
+  font-weight: 500;
+}
+
+.assignee {
+  content: "";
+  display: inline-block;
+  vertical-align: -.3em;
+  margin-left: 1em;
+  padding: 7px;
+  border-radius: 3px;
+  background-color: hsl(0, 0%, 87%);
+}
+.item {
+  background-color:hsl(210, 8%, 93%);
+}

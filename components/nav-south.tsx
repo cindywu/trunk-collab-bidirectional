@@ -45,6 +45,7 @@ export default function NavSouth({ rep } : Props) {
       { selectedReference && expandSelectedReference ?
         <ReferenceView
           selectedReference={selectedReference}
+          references={references}
         />
       :
         <ReferenceList

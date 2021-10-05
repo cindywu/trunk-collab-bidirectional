@@ -7,7 +7,7 @@ type Props = {
 }
 
 export default function LabelList({ labels } : Props) {
-  const labelElements = labels.map((label) => {
+  const labelElements = labels && labels.map((label) => {
     let obj
 
     typeof(label) === 'object' ?

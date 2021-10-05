@@ -212,6 +212,7 @@ export const ReferenceProvider = ({ children } : ReferenceProviderProps) => {
     if (rep != undefined) {
       rep.mutate.updateReference({
         id: reference.id,
+        links: reference.links,
         publication_date: reference.publication_date,
         authors: reference.authors,
         source_url: reference.source_url,

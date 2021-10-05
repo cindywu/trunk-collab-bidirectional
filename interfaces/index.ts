@@ -9,6 +9,7 @@ export type IReference = {
   labels: any
   comments: any
   publication_date: string
+  links: any
 }
 
 export type ILabel = {
@@ -27,4 +28,10 @@ export type IAuthor = {
   id: string
   name: string
   first: string
+}
+
+export type ILink = {
+  id: string
+  reference_id: string
+  type: string
 }
