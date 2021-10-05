@@ -5,7 +5,7 @@ import {
   NEXT_PUBLIC_REPLICHAT_PUSHER_APP_ID,
   NEXT_PUBLIC_REPLICHAT_PUSHER_KEY,
   NEXT_PUBLIC_REPLICHAT_PUSHER_SECRET,
-  NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER
+  NEXT_PUBLIC_REPLICHAT_PUSHER_CLUSTER,
 } from '../../lib/constants'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -95,12 +95,12 @@ async function getLastMutationID(t, clientID) {
   return 0
 }
 
-async function createReference(t, {id, source_url, name, parent, date, description, labels, comments}, version) {
+async function createReference(t, {id, authors, source_url, name, parent, date, description, labels, comments}, version) {
   await t.none(
     `INSERT INTO reference (
-      id, source_url, name, parent, date, description, labels, comments, version) values
-    ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-    [id, source_url, name, parent, date, description, labels, comments, version],
+      id, authors, source_url, name, parent, date, description, labels, comments, version) values
+    ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+    [id, authors, source_url, name, parent, date, description, labels, comments, version],
   )
 }
 
@@ -114,20 +114,21 @@ async function deleteReference(t, {id}) {
   )
 }
 
-async function updateReference(t, {id, source_url, name, parent, date, description, labels, comments}, version) {
+async function updateReference(t, {id, authors, source_url, name, parent, date, description, labels, comments}, version) {
   await t.none(
     `UPDATE reference
     SET
-    source_url = ($2),
-    name = ($3),
-    parent = ($4),
-    date = ($5),
-    description = ($6),
-    labels = ($7),
-    comments = ($8),
-    version = ($9)
+    authors = ($2),
+    source_url = ($3),
+    name = ($4),
+    parent = ($5),
+    date = ($6),
+    description = ($7),
+    labels = ($8),
+    comments = ($9),
+    version = ($10)
     WHERE id = ($1)`,
-    [id, source_url, name, parent, date, description, labels, comments, version],
+    [id, authors, source_url, name, parent, date, description, labels, comments, version],
   )
 }
 

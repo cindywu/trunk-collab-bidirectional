@@ -30,6 +30,36 @@ export default function Reference(props : ReferenceProps ){
     backgroundColor: 'hsl(210, 8%, 93%)'
   } as React.CSSProperties
 
+  function potatoName() {
+    let last
+
+    reference.authors.map((author, index) => {
+      let data = JSON.parse(author)
+      if (JSON.parse(author).first === 'true'){
+        last = data.name.split(' ')[1]
+      }
+    })
+    let year = '2012'
+    let number = reference.authors.length
+
+    let potatoName
+    switch (number) {
+      case 0:
+        potatoName = `Anonymous ${year}`
+        break
+      case 1:
+        potatoName = `${last} ${year}`
+        break
+      case 2:
+        potatoName = `${last} and ${JSON.parse(reference.authors[1]).name.split(' ')[1]} ${year}`
+        break
+      default:
+        potatoName = `${last} et al. ${year}`
+        break
+    }
+    return potatoName
+  }
+
   return (
     <div
       className={styles.container}
@@ -37,7 +67,8 @@ export default function Reference(props : ReferenceProps ){
       style={(selectedReference && selectedReference.id === props.id.substring(4)) ? emphasisStyle : undefined }
     >
       <div>
-        <span className={styles.identifier}>{reference.name}</span>
+        {/* <span className={styles.identifier}>{reference.name}</span> */}
+        <span className={styles.identifier}>{potatoName()}</span>
         <span className={styles.parent}>{` › `}</span>
         <span className={`${styles.parent} mr-1`}>{reference.parent}</span>
         <span className={styles.title}>{reference.description}</span>

@@ -22,9 +22,10 @@ export default function Workspace() {
   const { handleSetRep } = useReferences()
 
   const mutators = {
-    async createReference(tx: any, {id, source_url, name, parent, date, description, labels, comments}) {
+    async createReference(tx: any, {id, authors, source_url, name, parent, date, description, labels, comments}) {
       await tx.put(`ref/${id}`, {
         name,
+        authors,
         source_url,
         parent,
         date,
@@ -36,9 +37,10 @@ export default function Workspace() {
     async deleteReference(tx: any, {id}) {
       await tx.del(`ref/${id}`)
     },
-    async updateReference(tx: any, {id, source_url, name, parent, date, description, labels, comments}) {
+    async updateReference(tx: any, {id, authors, source_url, name, parent, date, description, labels, comments}) {
       await tx.put(`ref/${id}`, {
         name,
+        authors,
         source_url,
         parent,
         date,

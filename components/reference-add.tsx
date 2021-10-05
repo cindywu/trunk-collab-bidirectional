@@ -35,6 +35,13 @@ export default function ReferenceAdd() {
     const myDate = (date.toLocaleString('default', { month: 'short'})) + " " + date.getUTCDate()
     const newReference = {
       id: uuidv4(),
+      authors: [
+        {
+          id: uuidv4(),
+          name: '',
+          first: 'true',
+        }
+      ],
       source_url: file != undefined ? sourceUrl : '',
       name: nameRef.current ? nameRef.current.value : '',
       parent: parentRef.current ? parentRef.current.value : '',
@@ -91,6 +98,13 @@ export default function ReferenceAdd() {
 
     const brandNewReference = {
       id: uuidv4(),
+      authors: [
+        {
+          id: uuidv4(),
+          name: '',
+          first: 'true',
+        }
+      ],
       source_url: file != undefined ? sourceUrl : '',
       name: nameRef.current ? nameRef.current.value : '',
       parent: parentRef.current ? parentRef.current.value : '',

@@ -20,9 +20,41 @@ export default function ReferenceView({ selectedReference }: Props) {
     handleSourceFileUpload(file, selectedReference)
   }
 
+  function potatoName() {
+    let last
+
+    selectedReference.authors.map((author, index) => {
+      let data = JSON.parse(author)
+      if (JSON.parse(author).first === 'true'){
+        last = data.name.split(' ')[1]
+      }
+    })
+    let year = '2012'
+    let number = selectedReference.authors.length
+
+    let potatoName
+    switch (number) {
+      case 0:
+        potatoName = `Anonymous ${year}`
+        break
+      case 1:
+        potatoName = `${last} ${year}`
+        break
+      case 2:
+        potatoName = `${last} and ${JSON.parse(selectedReference.authors[1]).name.split(' ')[1]} ${year}`
+        break
+      default:
+        potatoName = `${last} et al. ${year}`
+        break
+    }
+    return potatoName
+  }
+
   return (
     <div className={styles.container} key={selectedReference.id}>
-      <div className={styles.name}>{selectedReference.name}</div>
+      <div className={styles.uuid}>{selectedReference.id}</div>
+      {/* <div className={styles.name}>{selectedReference.name}</div> */}
+      <div className={styles.name}>{potatoName()}</div>
       <div className={styles.description}>{selectedReference.description}</div>
       {/* <div className={styles.buttonContainer}>
         <button className={`${styles.subReferenceButton} btn btn-secondary`}>+ Add sub-references</button>

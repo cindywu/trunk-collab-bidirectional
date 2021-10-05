@@ -5,6 +5,15 @@
   padding: 3em 6em;
 }
 
+.uuid {
+  color: hsl(0, 0%, 96%);
+  padding: 1em 0;
+}
+
+.uuid:hover {
+  color: hsl(0, 0%, 80%);
+}
+
 .name {
   font-size: 2.8em;
   font-weight: 500;
