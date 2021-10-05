@@ -8,6 +8,7 @@ export type IReference = {
   description: string
   labels: any
   comments: any
+  publication_date: string
 }
 
 export type ILabel = {

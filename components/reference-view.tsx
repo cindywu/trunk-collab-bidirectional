@@ -20,6 +20,29 @@ export default function ReferenceView({ selectedReference }: Props) {
     handleSourceFileUpload(file, selectedReference)
   }
 
+  function getYearFromPublicationDate() {
+    let year
+    let array = selectedReference.publication_date.split(' ')
+    switch (array.length) {
+      case 0:
+        year = 'YYYY'
+        break
+      case 1:
+        year = array[0]
+        break
+      case 2:
+        year = array[1]
+        break
+      case 3:
+        year = array[2]
+        break
+      default:
+        year = 'YYYY'
+        break
+    }
+    return year
+  }
+
   function potatoName() {
     let last
 
@@ -29,7 +52,7 @@ export default function ReferenceView({ selectedReference }: Props) {
         last = data.name.split(' ')[1]
       }
     })
-    let year = '2012'
+    let year = getYearFromPublicationDate()
     let number = selectedReference.authors.length
 
     let potatoName
@@ -50,15 +73,24 @@ export default function ReferenceView({ selectedReference }: Props) {
     return potatoName
   }
 
+  function handleSubReferenceAdd() {
+    console.log('handleSubReferenceAdd')
+  }
+
   return (
     <div className={styles.container} key={selectedReference.id}>
       <div className={styles.uuid}>{selectedReference.id}</div>
       {/* <div className={styles.name}>{selectedReference.name}</div> */}
       <div className={styles.name}>{potatoName()}</div>
       <div className={styles.description}>{selectedReference.description}</div>
-      {/* <div className={styles.buttonContainer}>
-        <button className={`${styles.subReferenceButton} btn btn-secondary`}>+ Add sub-references</button>
-      </div> */}
+      <div className={styles.buttonContainer}>
+        <button
+          className={`${styles.subReferenceButton} btn btn-secondary`}
+          onClick={handleSubReferenceAdd}
+        >
+          + Add sub-references
+        </button>
+      </div>
       <div className={styles.buttonContainer}>
         <button
           className={`${styles.subReferenceButton} btn btn-secondary`}

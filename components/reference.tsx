@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './reference.module.css'
 import LabelList from './label-list'
 import type { IReference } from '../interfaces'
@@ -13,6 +13,10 @@ interface ReferenceProps {
 export default function Reference(props : ReferenceProps ){
   const reference : IReference = props.value
   const { selectedReference } = props
+
+  useEffect(() => {
+
+  },[])
 
   const {
     handleReferenceSelect,
@@ -30,6 +34,30 @@ export default function Reference(props : ReferenceProps ){
     backgroundColor: 'hsl(210, 8%, 93%)'
   } as React.CSSProperties
 
+  function getYearFromPublicationDate() {
+    let year
+    let array = reference.publication_date.split(' ')
+    switch (array && array.length) {
+      case 0:
+        year = 'YYYY'
+        break
+      case 1:
+        year = array[0]
+        break
+      case 2:
+        year = array[1]
+        break
+      case 3:
+        year = array[2]
+        break
+      default:
+        year = 'YYYY'
+        break
+    }
+    return year
+  }
+
+
   function potatoName() {
     let last
 
@@ -39,7 +67,7 @@ export default function Reference(props : ReferenceProps ){
         last = data.name.split(' ')[1]
       }
     })
-    let year = '2012'
+    let year = getYearFromPublicationDate()
     let number = reference.authors.length
 
     let potatoName
@@ -60,6 +88,16 @@ export default function Reference(props : ReferenceProps ){
     return potatoName
   }
 
+  function truncatedDescription() {
+    if (reference.description.length > 66) {
+      return reference.description.substring(0, 66) + '...'
+    } else if (reference.description.length === 0) {
+      return 'No name'
+    } else {
+      return reference.description
+    }
+  }
+
   return (
     <div
       className={styles.container}
@@ -71,7 +109,7 @@ export default function Reference(props : ReferenceProps ){
         <span className={styles.identifier}>{potatoName()}</span>
         <span className={styles.parent}>{` › `}</span>
         <span className={`${styles.parent} mr-1`}>{reference.parent}</span>
-        <span className={styles.title}>{reference.description}</span>
+        <span className={styles.title}>{truncatedDescription()}</span>
       </div>
       <div>
         <span className={`${styles.labels} mr-1`}>

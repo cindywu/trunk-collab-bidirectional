@@ -129,6 +129,29 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
     })
   }
 
+  function getYearFromPublicationDate() {
+    let year
+    let array = selectedReference.publication_date.split(' ')
+    switch (array.length) {
+      case 0:
+        year = 'YYYY'
+        break
+      case 1:
+        year = array[0]
+        break
+      case 2:
+        year = array[1]
+        break
+      case 3:
+        year = array[2]
+        break
+      default:
+        year = 'YYYY'
+        break
+    }
+    return year
+  }
+
   function potatoName() {
     let last
 
@@ -138,7 +161,7 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
         last = data.name.split(' ')[1]
       }
     })
-    let year = '2012'
+    let year = getYearFromPublicationDate()
     let number = selectedReference.authors.length
 
     let potatoName
@@ -202,6 +225,19 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
           value={selectedReference.name}
           onChange={e => handleChange({ name: e.target.value })}
           className={styles.input} /> */}
+         <label
+          htmlFor="name"
+          className={styles.label}
+        >
+          References
+        </label>
+        <textarea
+          name="name"
+          id="name"
+          value={selectedReference.name}
+          onChange={e => handleChange({ name: e.target.value })}
+          className={styles.input}
+          spellCheck="false" />
         <label
           htmlFor="parent"
           className={styles.label}
@@ -215,6 +251,20 @@ export default function ReferenceEdit({ selectedReference, setSelectedReference 
           autoComplete="off"
           value={selectedReference.parent}
           onChange={e => handleChange({ parent: e.target.value })}
+          className={styles.input} />
+        <label
+          htmlFor="parent"
+          className={styles.label}
+        >
+          Publication date
+        </label>
+        <input
+          type="text"
+          name="parent"
+          id="parent"
+          autoComplete="off"
+          value={selectedReference.publication_date}
+          onChange={e => handleChange({ publication_date: e.target.value })}
           className={styles.input} />
         <label
           htmlFor="date"

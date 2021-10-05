@@ -95,12 +95,12 @@ async function getLastMutationID(t, clientID) {
   return 0
 }
 
-async function createReference(t, {id, authors, source_url, name, parent, date, description, labels, comments}, version) {
+async function createReference(t, {id, publication_date, authors, source_url, name, parent, date, description, labels, comments}, version) {
   await t.none(
     `INSERT INTO reference (
-      id, authors, source_url, name, parent, date, description, labels, comments, version) values
-    ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
-    [id, authors, source_url, name, parent, date, description, labels, comments, version],
+      id, publication_date, authors, source_url, name, parent, date, description, labels, comments, version) values
+    ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+    [id, publication_date, authors, source_url, name, parent, date, description, labels, comments, version],
   )
 }
 
@@ -114,21 +114,22 @@ async function deleteReference(t, {id}) {
   )
 }
 
-async function updateReference(t, {id, authors, source_url, name, parent, date, description, labels, comments}, version) {
+async function updateReference(t, {id, publication_date, authors, source_url, name, parent, date, description, labels, comments}, version) {
   await t.none(
     `UPDATE reference
     SET
-    authors = ($2),
-    source_url = ($3),
-    name = ($4),
-    parent = ($5),
-    date = ($6),
-    description = ($7),
-    labels = ($8),
-    comments = ($9),
-    version = ($10)
+    publication_date = ($2),
+    authors = ($3),
+    source_url = ($4),
+    name = ($5),
+    parent = ($6),
+    date = ($7),
+    description = ($8),
+    labels = ($9),
+    comments = ($10),
+    version = ($11)
     WHERE id = ($1)`,
-    [id, authors, source_url, name, parent, date, description, labels, comments, version],
+    [id, publication_date, authors, source_url, name, parent, date, description, labels, comments, version],
   )
 }
 
