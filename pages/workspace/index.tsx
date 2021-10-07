@@ -90,7 +90,11 @@ export default function Workspace() {
       </Head>
       <ReferenceAdd/>
       <div className={styles.container}>
-        <NavWest />
+        {rep &&
+          <NavWest
+            rep={rep}
+          />
+        }
         <div className={styles.center}>
           <NavNorth />
           {rep &&

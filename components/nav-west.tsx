@@ -4,9 +4,19 @@ import styles from './nav-west.module.css'
 import { supabase } from '../lib/supabaseClient'
 import { Offline, Online } from 'react-detect-offline'
 import { LOCAL_STORAGE_AUTH_TOKEN_KEY } from '../lib/constants'
+import { useSubscribe } from 'replicache-react'
 
-export default function NavWest() {
+export default function NavWest({ rep }: any) {
   const [email, setEmail] = useState<string>()
+
+  const references = useSubscribe(
+    rep,
+    async tx => {
+      const list = await tx.scan({ prefix: 'ref/'}).entries().toArray()
+      return list
+    },
+    [],
+  )
 
   async function signOut() {
     const { error } = await supabase.auth.signOut()
@@ -18,6 +28,7 @@ export default function NavWest() {
     session ? setEmail(JSON.parse(session).currentSession.user.email) : setEmail('guest')
   }, [])
 
+
   return (
     <div className={styles.container}>
       <div className={styles.userInfoContainer}>
@@ -27,6 +38,9 @@ export default function NavWest() {
         <div>
           <Offline>You are offline</Offline>
           <Online>You are online</Online>
+        </div>
+        <div>
+          {references.length} references
         </div>
       </div>
       <div className={styles.signOutContainer}>

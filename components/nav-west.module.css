@@ -24,14 +24,14 @@
 
 .userInfoContainer {
   padding-top: 2vh;
-  color:hsl(0, 0%, 98%);
+  color: hsl(0, 0%, 62%);
 }
 
 .userInfoContainer > div {
   padding: .2em;
 }
 
-.userInfoContainer:hover {
+/* .userInfoContainer:hover {
   color: hsl(0, 0%, 62%)
-}
+} */
 

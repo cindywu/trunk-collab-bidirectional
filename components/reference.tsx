@@ -82,12 +82,18 @@ export default function Reference(props : ReferenceProps ){
   function potatoName() {
     let last
 
-    reference && reference.authors && reference.authors.map((author, index) => {
-      let data = JSON.parse(author)
-      if (JSON.parse(author).first === 'true'){
-        last = data.name.split(' ')[1]
+    reference.authors.map(author => {
+      let str
+      if (typeof author === 'object') {
+        str = JSON.stringify(author)
+      } else {
+        str = author
+      }
+      if (JSON.parse(str).first === 'true') {
+        last = JSON.parse(str).name.split(' ')[1]
       }
     })
+
     let year = getYearFromPublicationDate()
     let number = reference && reference.authors && reference.authors.length
 
