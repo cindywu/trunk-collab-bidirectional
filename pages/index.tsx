@@ -18,7 +18,7 @@ export default function Home() {
       setSession(session)
     })
     const session = localStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN_KEY)
-    setSession(JSON.parse(session).currentSession)
+    session && setSession(JSON.parse(session).currentSession)
   }, [])
 
   return (
