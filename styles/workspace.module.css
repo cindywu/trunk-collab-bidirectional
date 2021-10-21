@@ -8,3 +8,21 @@
   width: 58.33%;
   height: 100vh;
 }
+
+.downloadDataButton {
+  margin: 0 auto;
+  margin-top: 6em;
+  text-align: center;
+  font-size: 1.4em;
+}
+
+.downloadDataButton > button {
+  padding: 1em;
+}
+.downloadDataButton > button:hover {
+  background-color: hsl(0, 0%, 92%);
+}
+
+.referenceNumber {
+  padding: 1em;
+}
