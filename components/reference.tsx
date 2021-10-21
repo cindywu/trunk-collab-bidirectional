@@ -151,19 +151,15 @@ export default function Reference(props : ReferenceProps ){
       <div>
         { selectedReference && (reference.id === selectedReference.id ) && links.map((link, index) => {
           return (
-            <div>
             <ReferenceLink
               key={link[0].substring(4)}
               id={link[0].substring(4)}
               value={link[1]}
               selectedReference={selectedReference}
             />
-          </div>
           )
         })}
-
     </div>
   </>
-
   )
 }

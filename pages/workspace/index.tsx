@@ -8,9 +8,10 @@ import NavSouth from '../../components/nav-south'
 import NavEast from '../../components/nav-east'
 import styles from '../../styles/workspace.module.css'
 import { useReferences } from '../../components/reference-provider'
-
+import { AuthSession } from '@supabase/supabase-js'
 import { Replicache } from 'replicache'
 import Pusher from 'pusher-js'
+import { LOCAL_STORAGE_AUTH_TOKEN_KEY } from '../../lib/constants'
 
 import {
   NEXT_PUBLIC_REPLICHAT_PUSHER_KEY,
@@ -20,6 +21,13 @@ import {
 export default function Workspace() {
   const [rep, setRep] = useState<Replicache>(null)
   const { handleSetRep } = useReferences()
+  const [session, setSession] = useState<AuthSession | null>()
+
+  useEffect(() => {
+    const session = localStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN_KEY)
+    setSession(session ? JSON.parse(session).currentSession : null)
+  },[])
+
 
   const mutators = {
     async createReference(tx: any, {id, links, publication_date, authors, source_url, name, parent, date, description, labels, comments}) {
